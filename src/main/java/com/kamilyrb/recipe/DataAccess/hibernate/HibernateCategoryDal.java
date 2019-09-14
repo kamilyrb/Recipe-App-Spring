@@ -23,6 +23,7 @@ public class HibernateCategoryDal implements ICategoryDal {
     @Override
     public List<Category> getAll() {
         Session session = entityManager.unwrap(Session.class);
-        return  session.createQuery("from Category", Category.class).list();
+        List<Category> categories  =  session.createQuery("from Category", Category.class).getResultList();
+        return categories;
     }
 }

@@ -20,14 +20,16 @@ public class HibernateRecipeDal implements IRecipeDal {
     }
 
     @Override
+    @Transactional
     public List<Recipe> getAll() {
-        return null;
+        Session session = entityManager.unwrap(Session.class);
+        return session.createQuery("from Recipe",Recipe.class).getResultList();
     }
 
     @Override
     @Transactional
     public List<Recipe> getRecipesOfCategory(int categoryId) {
         Session session = entityManager.unwrap(Session.class);
-        return session.createQuery("from Recipe as r where r.category_id := category_id", Recipe.class).setParameter("category_id",categoryId).list();
+        return session.createQuery("from Recipe as r where r.category.id =: cid", Recipe.class).setParameter("cid",categoryId).list();
     }
 }
